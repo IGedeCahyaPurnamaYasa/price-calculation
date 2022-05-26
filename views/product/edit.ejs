@@ -1,0 +1,198 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <form action="/product/<%= product._id %>?_method=PUT" id="form-product" method="POST" class="validated-form" novalidate enctype="multipart/form-data">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card-body">
+                    <h4 class="card-title">Edit Product</h4>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="product[name]" class="form-control" value="<%= product.name %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price</label>
+                        <input type="number" id="price" name="product[price]" class="form-control" value="<%= product.price %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea name="product[description]" id="description" cols="" rows="" class="form-control"><%= product.description %></textarea>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sum Ingridient</td>
+                                <td> : </td>
+                                <td></td>
+                                <td id="sum_ingridient">0</td>
+                            </tr>
+                            <tr>
+                                <td>Sum Cost</td>
+                                <td> : </td>
+                                <td></td>
+                                <td id="sum_cost">0</td>
+                            </tr>
+                            <tr>
+                                <td>Adjustment</td>
+                                <td> : </td>
+                                <td></td>
+                                <td id="adjustment">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-12 mt-5">
+                        <a href="#" class="btn btn-success" id="save-product" onclick="save(event)" style="width: 100%">Save</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <div class="card-header">
+                            <div class="float-right">
+                                <button id="addIngridient" onclick="clone()" class="btn btn-primary btn-block" type="button"><i class="fa fa-plus"></i>Tambah</button>
+                            </div>
+                            <h4 class="card-title">Ingridients</h4>
+                        </div>
+                        <div class="card-body">
+                            <table id="table_ingridient" class="display" width="100%">
+                                <thead>
+                                    <tr class="text-center">
+                                        <!-- <th style="width: 10%;">No</th> -->
+                                        <th style="width: 20%;">Name</th>
+                                        <th style="width: 10%;">Qty</th>
+                                        <th style="width: 10%;">Unit</th>
+                                        <th style="width: 20%;">Price</th>
+                                        <th style="width: 20%;">Total</th>
+                                        <th style="width: 10%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_ingridient_body">
+                                    <% for(let i = 0; i < product.ingridients.length; i++ ) { %>
+                                        <tr id="ingridient-<%= i %>" class="ingridient-row">
+                                            <!-- <td class="text-center"><%= i+1 %></td> -->
+                                            <td>
+                                                <input type="text" class="form-control ingridient_name" name="ingridient[name]" value="<%= product.ingridients[i].name%>">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control ingridient_qty" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[qty]" value="<%= product.ingridients[i].qty%>">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control ingridient_unit" name="ingridient[unit]" value="<%= product.ingridients[i].unit%>">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control ingridient_price" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[price]" value="<%= product.ingridients[i].price%>">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control ingridient_total" name="ingridient[total]" readonly value="<%= product.ingridients[i].total%>">
+                                            </td>
+                                            <td>
+                                                <button onclick="$(this).closest('tr').remove(); calculate_total_ingridient();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% } %> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <div class="card-header">
+                            <div class="float-right">
+                                <button id="addCost" onclick="clone_cost()" class="btn btn-primary btn-block" type="button"><i class="fa fa-plus"></i>Tambah</button>
+                            </div>
+                            <h4 class="card-title">Cost</h4>
+                        </div>
+                        <div class="card-body">
+                            <table id="table_cost" class="display" width="100%">
+                                <thead>
+                                    <tr class="text-center">
+                                        <!-- <th style="width: 10%;">No</th> -->
+                                        <th style="width: 50%;">Name</th>
+                                        <th style="width: 30%;">Type</th>
+                                        <th style="width: 10%;">Percentage</th>
+                                        <th style="width: 10%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_cost_body">
+                                    <% for(let i = 0; i < product.costs.length; i++ ) { %>
+                                        <tr id="cost-<%= i %>" class="cost-row">
+                                            <!-- <td class="text-center"><%= i+1 %></td> -->
+                                            <td>
+                                                <input type="text" class="form-control cost_name" name="cost[name]" value="<%= product.costs[i].name%>">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control cost_type" name="cost[type]" value="<%= product.costs[i].type%>">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control cost_percentage" onkeyup="calculate_total_cost()" name="cost[percentage]" value="<%= product.costs[i].percentage%>">
+                                            </td>
+                                            <td>
+                                                <button onclick="$(this).closest('tr').remove(); calculate_total_cost();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% } %> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<template id="template-ingridient-row">
+    <tr id="ingridient-0" class="ingridient-row">
+        <td>
+            <input name="ingridient[name]" type="text" class="form-control ingridient_name">
+        </td>
+        <td>
+            <input name="ingridient[qty]" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" type="number" class="form-control ingridient_qty">
+        </td>
+        <td>
+            <input name="ingridient[unit]" type="text" class="form-control ingridient_unit">
+        </td>
+        <td>
+            <input name="ingridient[price]" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" type="number" class="form-control ingridient_price">
+        </td>
+        <td>
+            <input name="ingridient[total]" type="number" readonly class="form-control ingridient_total">
+        </td>
+        <td>
+            <button onclick="$(this).closest('tr').remove(); calculate_total_ingridient(); calculate_total_cost();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+        </td>
+    </tr>
+</template>
+
+
+<template id="template-cost-row">
+    <tr id="cost-0" class="cost-row">
+        <td>
+            <input name="cost[name]" type="text" class="form-control cost_name">
+        </td>
+        <td>
+            <input name="cost[type]" onkeyup="calculate_total_cost()" type="text" class="form-control cost_type">
+        </td>
+        <td>
+            <input name="cost[percentage]" onkeyup="calculate_total_cost()" type="number" class="form-control cost_percentage">
+        </td>
+        <td>
+            <button onclick="$(this).closest('tr').remove();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+        </td>
+    </tr>
+</template>
+
+<meta id="product_id" content="<%= product._id %>">
+<script src="/js/product/edit.js"></script>
