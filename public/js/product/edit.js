@@ -34,10 +34,7 @@ function clone_cost(){
     const lastId = $(row.slice(-1)[0]).attr('id') ? $(row.slice(-1)[0]).attr('id').split('-')[1] : -1;
     const content = $('#template-cost-row').prop('content');
     const tr = $(content).children().get()[0];
-    const cost_type = $(content).find('.cost_type');
-
-    // console.log('cost_type: ', cost_type);
-    
+    // const cost_type = $(content).find('.cost_type');    
     // $(cost_type).select2();
 
     $(tr).attr('id', 'cost-' + (parseInt(lastId) + 1));
@@ -56,8 +53,8 @@ function calculate_total_ingridient(){
     $.each($('.ingridient_total'), function(k, v) {
         value = $(v).val();
         value = parseFloat(value);
-        if(value !== NaN)
-            total += value
+        if(!isNaN(value))
+            total += value;
     })
 
     $('#sum_ingridient').text(total);
@@ -69,7 +66,7 @@ function calculate_total_cost(){
     $.each($('.cost_percentage'), function(k, v) {
         value = $(v).val();
         value = parseFloat(value);
-        if(value !== NaN){
+        if(!isNaN(value)){
             let temp = (value/100) * total_ingridient;
             total += temp
         }
@@ -104,11 +101,8 @@ function calculate_price(event){
 
 function calculate_adjustment(){
     let sum_ingridient = $('#sum_ingridient').text();
-    console.log('sum_ingridient: ', sum_ingridient);
     let sum_cost = $('#sum_cost').text();
-    console.log('sum_cost: ', sum_cost);
     let price = $('#price').val();
-    console.log('price: ', price);
 
     let adjustment = parseFloat(price) - (parseFloat(sum_ingridient) + parseFloat(sum_cost));
 
@@ -119,21 +113,6 @@ function save(e){
     let product_id = document.getElementById("product_id").getAttribute('content');
     let form = $('#form-product');
     form.submit();
-    // let form_data = new FormData(form);
-
-    // $.ajax({
-    //     url: `/product/${product_id}?_method=PUT`,
-    //     method: 'POST',
-    //     data: form,
-    //     success: function(res) {
-    //         console.log(res);
-    //     },
-    //     error: function(req, status, error){
-    //         console.log(error);
-    //     }
-    // })
-
-    // console.log('form: ', form);
 }
 
 
