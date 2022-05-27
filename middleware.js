@@ -4,6 +4,7 @@
 //  const Campground = require('./models/campground');
 //  const Review = require('./models/review');
 const Product = require('./models/product');
+const CostType = require('./models/cost_type');
 
 
 /**
@@ -52,6 +53,7 @@ module.exports.validateProductPartial = (req, res, next) => {
 }
 
 module.exports.validateCostType = (req, res, next) => {
+
     const { error } = costTypeSchema.validate(req.body);
     if(error){
         const msg = error.details.map(el => el.message).join(',');
@@ -66,9 +68,19 @@ module.exports.validateCostType = (req, res, next) => {
 module.exports.isOwner = async (req, res, next) => {
     const { id } = req.params;
     const product = await Product.findById(id);
-    if(!product.owner.equals(req.user._id)){
-        req.flash('error', 'You do not have permission to do that');
-        return res.redirect(`/products/${id}`);
+    if(product){
+        if(!product.owner.equals(req.user._id)){
+            req.flash('error', 'You do not have permission to do that');
+            return res.redirect(`/products/${id}`);
+        }
+    }
+
+    const cost_type = await CostType.findById(id);
+    if(cost_type){
+        if(!cost_type.owner.equals(req.user._id)){
+            req.flash('error', 'You do not have permission to do that');
+            return res.redirect(`/cost-type/${id}`);
+        }
     }
     
     next();

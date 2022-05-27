@@ -36,6 +36,6 @@ module.exports.productSchema = Joi.object({
 module.exports.costTypeSchema = Joi.object({
     cost_type: Joi.object({
         name: Joi.string().required().escapeHTML(),
-        type: Joi.number().required().valid(0, 1)
+        type: Joi.number().required().valid('biaya', 'keuntungan')
     })
 })
