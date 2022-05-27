@@ -103,7 +103,7 @@
                                 <tr class="text-center">
                                     <th style="width: 10%;">No</th>
                                     <th style="width: 70%;">Name</th>
-                                    <th style="width: 10%;">Type</th>
+                                    <!-- <th style="width: 10%;">Type</th> -->
                                     <th style="width: 10%;">Percentage</th>
                                 </tr>
                             </thead>
@@ -111,11 +111,11 @@
                                 <% for(let i = 0; i < product.costs.length; i++ ) { %>
                                     <tr>
                                         <td class="text-center"><%= i+1 %></td>
-                                        <td><%= product.costs[i].name%></td>
-                                        <td><%= product.costs[i].qty%></td>
-                                        <td><%= product.costs[i].unit%></td>
-                                        <td><%= product.costs[i].price%></td>
-                                        <td class="cost_total"><%= product.costs[i].total%></td>
+                                        <td><%= product.costs[i].cost_type_id.name%></td>
+                                        <td><%= product.costs[i].percentage%></td>
+                                        <!-- <td><%= product.costs[i].unit%></td> -->
+                                        <!-- <td><%= product.costs[i].price%></td> -->
+                                        <!-- <td class="cost_total"><%= product.costs[i].total%></td> -->
                                     </tr>
                                 <% } %> 
 

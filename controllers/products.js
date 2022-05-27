@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const CostType = require('../models/cost_type');
 const Ingridient = require('../models/ingridient');
 const Cost = require('../models/cost');
 const mongoose = require('mongoose');
@@ -35,7 +36,12 @@ module.exports.show = async (req, res) => {
 
     const product = await Product.findById(id)
         .populate('ingridients')
-        .populate('costs');
+        .populate({
+            path: 'costs',
+            populate: {
+                path: 'cost_type_id'
+            }
+        });
 
     if(!product){
         req.flash('error', 'Cannnot find that product');
@@ -51,11 +57,13 @@ module.exports.renderEditForm = async (req, res) => {
         .populate('ingridients')
         .populate('costs');
 
+    const cost_types = await CostType.find({owner : req.user._id});
+
     if(!product){
         req.flash('error', 'Cannnot find that product');
         return res.redirect('/product');
     }
-    res.render('product/edit', { product: product });
+    res.render('product/edit', { product: product, cost_types: cost_types });
 }
 
 module.exports.update = async (req, res) => {
@@ -69,10 +77,10 @@ module.exports.update = async (req, res) => {
     await product.save();
 
     if(req.body.ingridient) {
-        saveIngridient(req, res)
+        await saveIngridient(req, product)
     }
     if(req.body.cost) {
-        saveCost(req, res)
+        await saveCost(req, product)
     }
 
     // if(req.body.deleteImages){
@@ -96,13 +104,11 @@ module.exports.delete = async (req, res) => {
 }
 
 
-const saveIngridient = async (req, res) => {
+const saveIngridient = async (req, product) => {
     const { id } = req.params;
     let ingridients = req.body.ingridient
-    console.log('ingridients: ', ingridients);
 
     await Ingridient.deleteMany({product_id: id})
-    const product = await Product.findOne({_id: id});
     product.ingridients = [];
 
     if(Array.isArray(ingridients.name)){
@@ -115,7 +121,6 @@ const saveIngridient = async (req, res) => {
                 price: ingridients.price[i],
                 total: ingridients.total[i]
             }
-            // console.log('temp: ', temp);
     
             const ingrid = new Ingridient(temp);
             await ingrid.save();
@@ -132,7 +137,6 @@ const saveIngridient = async (req, res) => {
             price: ingridients.price,
             total: ingridients.total
         }
-        console.log('temp: ', temp);
 
         const ingrid = new Ingridient(temp);
         await ingrid.save();
@@ -143,20 +147,21 @@ const saveIngridient = async (req, res) => {
     await product.save();
 }
 
-const saveCost = async (req, res) => {
+const saveCost = async (req, product) => {
     const { id } = req.params;
     let costs = req.body.cost
 
-    await Ingridient.deleteMany({product_id: id})
-    const product = await Product.findOne({_id: id});
+    await Cost.deleteMany({product_id: id})
     product.costs = [];
 
-    if(Array.isArray(costs.name)){
-        for(let i= 0 ; i < costs.name.length; i++){
+    if(Array.isArray(costs.cost_type_id)){
+        console.log(costs);
+        for(let i= 0 ; i < costs.cost_type_id.length; i++){
             let temp = {
-                name: costs.name[i],
-                name: costs.type[i],
-                name: costs.percentage[i]
+                
+                product_id: id,
+                cost_type_id: costs.cost_type_id[i],
+                percentage: costs.percentage[i]
             }
     
             const cost = new Cost(temp);
@@ -167,11 +172,11 @@ const saveCost = async (req, res) => {
     }
     else{
         let temp = {
-            name: costs.name[i],
-            name: costs.type[i],
-            name: costs.percentage[i]
+            product_id: id,
+            cost_type_id: costs.cost_type_id,
+            percentage: costs.percentage
         }
-
+        
         const cost = new Cost(temp);
         await cost.save();
 
