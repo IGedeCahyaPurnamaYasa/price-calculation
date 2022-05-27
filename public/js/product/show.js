@@ -27,7 +27,7 @@ function calculate_total_ingridient(){
 
 function calculate_total_cost(){
     let total = 0;
-    let total_ingridient = parseFloat($('#sum_ingridient').val() ?? 0);
+    let total_ingridient = parseFloat($('#sum_ingridient').text() ?? 0);
     $.each($('.cost_percentage'), function(k, v) {
         value = $(v).text();
         value = parseFloat(value);

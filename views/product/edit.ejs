@@ -13,7 +13,7 @@
                     </div>
                     <div class="form-group">
                         <label for="price">Price</label>
-                        <input type="number" id="price" name="product[price]" class="form-control" value="<%= product.price %>">
+                        <input type="number" id="price" name="product[price]" onkeyup="calculate_adjustment()" class="form-control" value="<%= product.price %>">
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
