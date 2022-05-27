@@ -127,7 +127,7 @@
                                             <td>
                                                 <select name="cost[cost_type_id]" class="form-control select2" id="">
                                                     <% for (let cost_type of cost_types) {%>
-                                                        <% if (cost_type._id === product.costs[i].cost_type_id) { %>
+                                                        <% if (product.costs[i].cost_type_id.equals(cost_type._id)) { %>
                                                             <option value="<%= cost_type._id %>" selected><%= cost_type.name %></option>
                                                         <% } else { %>
                                                             <option value="<%= cost_type._id %>"><%= cost_type.name %></option>                                                        
