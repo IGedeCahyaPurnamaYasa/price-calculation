@@ -49,7 +49,7 @@ function calculate_adjustment(){
     let sum_cost = $('#sum_cost').text();
     let price = $('#price').text();
 
-    let adjustment = parseFloat(price) - (parseFloat(sum_ingridient) - parseFloat(sum_cost));
+    let adjustment = parseFloat(price) - (parseFloat(sum_ingridient) + parseFloat(sum_cost));
 
     $('#adjustment').text(adjustment);
 }
