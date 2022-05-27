@@ -111,35 +111,41 @@ const saveIngridient = async (req, product) => {
 
     if(Array.isArray(ingridients.name)){
         for(let i= 0 ; i < ingridients.name.length; i++){
+            console.log('ingridients.name: ', ingridients.name);
+
+            if(ingridients.name[i] !== ''){
+                let temp = {
+                    product_id: id,
+                    name: ingridients.name[i],
+                    qty: ingridients.qty[i],
+                    unit: ingridients.unit[i],
+                    price: ingridients.price[i],
+                    total: ingridients.total[i]
+                }
+        
+                const ingrid = new Ingridient(temp);
+                await ingrid.save();
+    
+                product.ingridients.push(ingrid);
+            }
+        }
+    }
+    else{
+        if(ingridients.name !== ''){
             let temp = {
                 product_id: id,
-                name: ingridients.name[i],
-                qty: ingridients.qty[i],
-                unit: ingridients.unit[i],
-                price: ingridients.price[i],
-                total: ingridients.total[i]
+                name: ingridients.name,
+                qty: ingridients.qty,
+                unit: ingridients.unit,
+                price: ingridients.price,
+                total: ingridients.total
             }
     
             const ingrid = new Ingridient(temp);
             await ingrid.save();
-
+    
             product.ingridients.push(ingrid);
         }
-    }
-    else{
-        let temp = {
-            product_id: id,
-            name: ingridients.name,
-            qty: ingridients.qty,
-            unit: ingridients.unit,
-            price: ingridients.price,
-            total: ingridients.total
-        }
-
-        const ingrid = new Ingridient(temp);
-        await ingrid.save();
-
-        product.ingridients.push(ingrid);
     }
 
     await product.save();
@@ -155,7 +161,6 @@ const saveCost = async (req, product) => {
     if(Array.isArray(costs.cost_type_id)){
         for(let i= 0 ; i < costs.cost_type_id.length; i++){
             let temp = {
-                
                 product_id: id,
                 cost_type_id: costs.cost_type_id[i],
                 percentage: costs.percentage[i]
