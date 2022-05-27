@@ -8,6 +8,8 @@ const app = {
         calculate_total_ingridient();
         calculate_total_cost();
         calculate_adjustment();
+
+        $('.select2').select2();
     }
 }
 
@@ -28,18 +30,27 @@ function clone_cost(){
     const lastId = $(row.slice(-1)[0]).attr('id') ? $(row.slice(-1)[0]).attr('id').split('-')[1] : -1;
     const content = $('#template-cost-row').prop('content');
     const tr = $(content).children().get()[0];
+    const cost_type = $(content).find('.cost_type');
+
+    // console.log('cost_type: ', cost_type);
+    
+    // $(cost_type).select2();
+
     $(tr).attr('id', 'cost-' + (parseInt(lastId) + 1));
-
+    
     const rows = $('#template-cost-row').html();
-
+    
     $('tbody#table_cost_body').append(rows);
+    
+    // cost_type.select2({
+        
+    // });
 }
 
 function calculate_total_ingridient(){
     let total = 0;
     $.each($('.ingridient_total'), function(k, v) {
         value = $(v).val();
-        console.log(value);
         value = parseFloat(value);
         if(value !== NaN)
             total += value
@@ -50,7 +61,7 @@ function calculate_total_ingridient(){
 
 function calculate_total_cost(){
     let total = 0;
-    let total_ingridient = parseFloat($('#sum_ingridient').val() ?? 0);
+    let total_ingridient = parseFloat($('#sum_ingridient').text() ?? 0);
     $.each($('.cost_percentage'), function(k, v) {
         value = $(v).val();
         value = parseFloat(value);
@@ -61,6 +72,8 @@ function calculate_total_cost(){
     })
 
     $('#sum_cost').text(total);
+
+    calculate_adjustment();
 }
 
 function calculate_total(event){
@@ -82,31 +95,31 @@ function calculate_adjustment(){
     let price = $('#price').val();
     console.log('price: ', price);
 
-    let adjustment = parseFloat(price) - (parseFloat(sum_ingridient) - parseFloat(sum_cost));
+    let adjustment = parseFloat(price) - (parseFloat(sum_ingridient) + parseFloat(sum_cost));
 
     $('#adjustment').text(adjustment);
 }
 
-// function save(e){
-//     let product_id = document.getElementById("product_id").getAttribute('content');
-//     let form = $('#form-product');
-//     form.submit();
-//     // let form_data = new FormData(form);
+function save(e){
+    let product_id = document.getElementById("product_id").getAttribute('content');
+    let form = $('#form-product');
+    form.submit();
+    // let form_data = new FormData(form);
 
-//     // $.ajax({
-//     //     url: `/product/${product_id}?_method=PUT`,
-//     //     method: 'POST',
-//     //     data: form,
-//     //     success: function(res) {
-//     //         console.log(res);
-//     //     },
-//     //     error: function(req, status, error){
-//     //         console.log(error);
-//     //     }
-//     // })
+    // $.ajax({
+    //     url: `/product/${product_id}?_method=PUT`,
+    //     method: 'POST',
+    //     data: form,
+    //     success: function(res) {
+    //         console.log(res);
+    //     },
+    //     error: function(req, status, error){
+    //         console.log(error);
+    //     }
+    // })
 
-//     console.log('form: ', form);
-// }
+    // console.log('form: ', form);
+}
 
 
 $(document).ready(() => app.start());
