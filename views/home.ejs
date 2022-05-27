@@ -14,25 +14,26 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
-                <h3 class="float-md-left mb-0">YelpCamp</h3>
+                <h3 class="float-md-left mb-0">Price Calculation</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-right">
-                    <a class="nav-link" href="/product">Products</a>
                     <% if(!currentUser) { %>
                         <a class="nav-link" href="/login">Login</a>
                         <a class="nav-link" href="/register">Register</a>
                     <% } else { %>
+                        <a class="nav-link" href="/product">Products</a>
+                        <a class="nav-link" href="/cost-type">Cost Type</a>
                         <a class="nav-link" href="/logout">Logout</a>
                     <% } %>
                 </nav>
             </div>
         </header>
         <main class="px-3">
-            <h1>YelpCamp</h1>
+            <h1>Price Calculation</h1>
             <p class="lead">
-                Welcome to YelpCamp! <br> Jump right in and explore our many campgrounds. <br>
-                Feel free to share some of your own and comment on others!
+                Welcome to Price Calculation! <br> Within this website <br>
+                You can record your product, ingridients to make the product and the cost and profit you want
             </p>
-            <a href="/campgrounds" class="btn btn-lg btn-secondary font-weight-bold text-white">View Campgrounds</a>
+            <a href="/product" class="btn btn-lg btn-secondary font-weight-bold text-white">Record Your Product</a>
         </main>
     
         <footer class="mt-auto text-white-50">
