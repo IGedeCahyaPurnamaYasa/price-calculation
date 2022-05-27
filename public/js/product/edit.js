@@ -2,8 +2,12 @@
 
 const app = {
     start(){
-        $('#table_ingridient').DataTable({})
-        $('#table_cost').DataTable({})
+        $('#table_ingridient').DataTable({
+            responsive: true
+        })
+        $('#table_cost').DataTable({
+            responsive: true
+        })
 
         calculate_total_ingridient();
         calculate_total_cost();
