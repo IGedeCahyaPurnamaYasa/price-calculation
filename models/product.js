@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Cost = require('./cost')
+const Ingridient = require('./ingridient')
+
 
 const Schema = mongoose.Schema;
 
@@ -42,9 +45,19 @@ const ProductSchema = new Schema({
 }, opts)
 
 ProductSchema.post('findOneAndDelete', async function(doc) {
-    // if(doc){
-    //     await 
-    // }
+    if(doc){
+        await Cost.deleteMany({
+            _id: {
+                $in: doc.costs
+            }
+        })
+
+        await Ingridient.deleteMany({
+            _id: {
+                $in: doc.ingridients
+            }
+        })
+    }
 })
 
 const Product = mongoose.model('Product', ProductSchema);

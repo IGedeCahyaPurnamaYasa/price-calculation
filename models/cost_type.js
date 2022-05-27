@@ -11,7 +11,7 @@ const CostTypeSchema = new Schema({
     },
     type: {
         type: String,
-        enum: [0, 1],
+        enum: ['biaya', 'keuntungan'],
         required: true
     },
     owner: {
