@@ -91,6 +91,17 @@ function calculate_total(event){
     $(target).parent().parent().find('td .ingridient_total').val(total);
 }
 
+function calculate_price(event){
+    let target = event.target;
+
+    let qty = $(target).parent().parent().find('td .ingridient_qty').val() ?? 0;
+    let total = $(target).parent().parent().find('td .ingridient_total').val() ?? 0;
+
+    let price = total / qty;
+
+    $(target).parent().parent().find('td .ingridient_price').val(price);
+}
+
 function calculate_adjustment(){
     let sum_ingridient = $('#sum_ingridient').text();
     console.log('sum_ingridient: ', sum_ingridient);
