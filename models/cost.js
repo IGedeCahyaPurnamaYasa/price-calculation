@@ -14,7 +14,8 @@ const CostSchema = new Schema({
         ref: 'CostType'
     },
     percentage: {
-        type: Number
+        type: Number,
+        default: 0
     }
 }, opts)
 

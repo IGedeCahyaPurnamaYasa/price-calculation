@@ -28,8 +28,8 @@ module.exports.productSchema = Joi.object({
     product: Joi.object({
         name: Joi.string().required().escapeHTML(),
         price: Joi.number().required().min(0),
-        description: Joi.string().required().escapeHTML()
-    }).required(),
+        description: Joi.string().allow('').escapeHTML()
+    }),
     deleteImages: Joi.array()
 });
 
