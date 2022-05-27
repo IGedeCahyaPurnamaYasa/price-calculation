@@ -1,0 +1,49 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card-body">
+                <h4 class="card-title"><%= cost_type.name %></h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="name"> <%= cost_type.price %> </td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="type"> <%= cost_type.type %> </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <a href="/cost-type/<%= cost_type._id %>/edit" class="btn btn-warning text-white" style="width: 100%;"><i class="fa fa-edit"></i> Edit</a>
+                    </div>
+                    <div class="col-6">
+                        <form action="/cost-type/<%= cost_type._id %>?_method=DELETE" class="d-inline mx-1" method="POST">
+                            <button style="width: 100%;" class="btn btn-danger"><i class="fa fa-trash text-white"></i> Delete</button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/cost_type/show.js"></script>

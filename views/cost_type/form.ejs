@@ -1,0 +1,51 @@
+<% layout('layouts/boilerplate') %>
+
+
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-body">
+                    <% if(typeof cost_type !== 'undefined') { %>
+                        <h5 class="card-title">Edit Cost Type</h5>
+                    <% } else { %>
+                        <h5 class="card-title">Create New Cost Type</h5>
+                    <% } %>
+                    <form action="/cost-type<%= typeof cost_type !== 'undefined' ? `/${cost_type._id}?_method=PUT` : '' %>" method="POST" class="validated-form" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="cost_type[name]" autofocus required value="<%= typeof cost_type !== 'undefined' ? cost_type.name : '' %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cost_type" class="form-label">Type</label>
+                            <select name="cost_type[type]" class="cost_type select2 form-control" id="cost_type">
+                                <option value="biaya">biaya</option>
+                                <option value="keuntungan">keuntungan</option>
+                            </select>
+                            <!-- <input type="number" class="form-control" id="price" name="cost_type[type]" autofocus required> -->
+                        </div>
+                        <button class="btn btn-primary btn-block"><%= typeof cost_type !== 'undefined' ? 'Update' : 'Add' %></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% if(typeof cost_type !== 'undefined') { %>
+    <script>
+        $(document).ready(function(){
+            $('.select2').select2();
+            $('.select2').val('<%= cost_type.type %>').trigger('change');
+        })
+    </script>
+<% } else { %>
+    
+    <script>
+        $(document).ready(function(){
+            $('.select2').select2();
+            
+        })
+    </script>
+<% } %>
+
