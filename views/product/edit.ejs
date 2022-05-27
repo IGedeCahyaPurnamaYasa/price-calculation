@@ -71,7 +71,7 @@
                                         <th style="width: 20%;">Name</th>
                                         <th style="width: 10%;">Qty</th>
                                         <th style="width: 10%;">Unit</th>
-                                        <th style="width: 20%;">Price</th>
+                                        <th style="width: 20%;">Price/Unit</th>
                                         <th style="width: 20%;">Total</th>
                                         <th style="width: 10%;">Action</th>
                                     </tr>
@@ -83,16 +83,16 @@
                                                 <input type="text" class="form-control ingridient_name" name="ingridient[name]" value="<%= product.ingridients[i].name%>">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control ingridient_qty" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[qty]" value="<%= product.ingridients[i].qty%>">
+                                                <input type="text" class="form-control ingridient_qty text-right" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[qty]" value="<%= product.ingridients[i].qty%>">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control ingridient_unit" name="ingridient[unit]" value="<%= product.ingridients[i].unit%>">
+                                                <input type="text" class="form-control ingridient_unit text-center" name="ingridient[unit]" value="<%= product.ingridients[i].unit%>">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control ingridient_price" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[price]" value="<%= product.ingridients[i].price%>">
+                                                <input type="text" class="form-control ingridient_price text-right" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[price]" value="<%= product.ingridients[i].price%>">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control ingridient_total" name="ingridient[total]" readonly value="<%= product.ingridients[i].total%>">
+                                                <input type="text" class="form-control ingridient_total text-right" name="ingridient[total]" readonly value="<%= product.ingridients[i].total%>">
                                             </td>
                                             <td>
                                                 <button onclick="$(this).closest('tr').remove(); calculate_total_ingridient();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -136,7 +136,7 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control cost_percentage" onkeyup="calculate_total_cost()" max="100" min="0" name="cost[percentage]" value="<%= product.costs[i].percentage%>">
+                                                <input type="text" class="form-control cost_percentage text-right" onkeyup="calculate_total_cost()" max="100" min="0" name="cost[percentage]" value="<%= product.costs[i].percentage%>">
                                             </td>
                                             <td>
                                                 <button onclick="$(this).closest('tr').remove(); calculate_total_cost();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
@@ -159,16 +159,16 @@
             <input name="ingridient[name]" type="text" class="form-control ingridient_name">
         </td>
         <td>
-            <input name="ingridient[qty]" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" type="number" class="form-control ingridient_qty">
+            <input name="ingridient[qty]" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" type="number" class="form-control ingridient_qty text-right">
         </td>
         <td>
-            <input name="ingridient[unit]" type="text" class="form-control ingridient_unit">
+            <input name="ingridient[unit]" type="text" class="form-control ingridient_unit text-center">
         </td>
         <td>
-            <input name="ingridient[price]" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" type="number" class="form-control ingridient_price">
+            <input name="ingridient[price]" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" type="number" class="form-control ingridient_price text-right">
         </td>
         <td>
-            <input name="ingridient[total]" type="number" readonly class="form-control ingridient_total">
+            <input name="ingridient[total]" type="number" readonly class="form-control ingridient_total text-right">
         </td>
         <td>
             <button onclick="$(this).closest('tr').remove(); calculate_total_ingridient(); calculate_total_cost();" class="btn btn-danger"><i class="fa fa-trash"></i></button>

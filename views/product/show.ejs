@@ -2,7 +2,7 @@
 
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card-body">
                 <h4 class="card-title"><%= product.name %></h4>
                 <table>
@@ -62,7 +62,7 @@
                 
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-9">
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="card-body">
@@ -83,10 +83,10 @@
                                     <tr>
                                         <td class="text-center"><%= i+1 %></td>
                                         <td><%= product.ingridients[i].name%></td>
-                                        <td><%= product.ingridients[i].qty%></td>
-                                        <td><%= product.ingridients[i].unit%></td>
-                                        <td><%= product.ingridients[i].price%></td>
-                                        <td class="ingridient_total"><%= product.ingridients[i].total%></td>
+                                        <td class="text-right"><%= product.ingridients[i].qty%></td>
+                                        <td class="text-center"><%= product.ingridients[i].unit%></td>
+                                        <td class="text-right"><%= product.ingridients[i].price%></td>
+                                        <td class="ingridient_total text-right"><%= product.ingridients[i].total%></td>
                                     </tr>
                                 <% } %> 
                             </tbody>
@@ -111,7 +111,7 @@
                                     <tr>
                                         <td class="text-center"><%= i+1 %></td>
                                         <td><%= product.costs[i].cost_type_id.name%></td>
-                                        <td class="cost_percentage"><%= product.costs[i].percentage%></td>
+                                        <td class="cost_percentage text-center"><%= product.costs[i].percentage%></td>
                                     </tr>
                                 <% } %> 
 
