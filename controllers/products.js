@@ -160,29 +160,34 @@ const saveCost = async (req, product) => {
 
     if(Array.isArray(costs.cost_type_id)){
         for(let i= 0 ; i < costs.cost_type_id.length; i++){
-            let temp = {
-                product_id: id,
-                cost_type_id: costs.cost_type_id[i],
-                percentage: costs.percentage[i]
-            }
-    
-            const cost = new Cost(temp);
-            await cost.save();
 
-            product.costs.push(cost);
+            if(costs.percentage[i] !== ''){
+                let temp = {
+                    product_id: id,
+                    cost_type_id: costs.cost_type_id[i],
+                    percentage: costs.percentage[i]
+                }
+        
+                const cost = new Cost(temp);
+                await cost.save();
+    
+                product.costs.push(cost);
+            }
         }
     }
     else{
-        let temp = {
-            product_id: id,
-            cost_type_id: costs.cost_type_id,
-            percentage: costs.percentage
+        if(costs.percentage !== ''){
+            let temp = {
+                product_id: id,
+                cost_type_id: costs.cost_type_id,
+                percentage: costs.percentage
+            }
+            
+            const cost = new Cost(temp);
+            await cost.save();
+    
+            product.costs.push(cost);
         }
-        
-        const cost = new Cost(temp);
-        await cost.save();
-
-        product.costs.push(cost);
     }
 
     await product.save();
