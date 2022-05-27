@@ -67,8 +67,6 @@ module.exports.renderEditForm = async (req, res) => {
 }
 
 module.exports.update = async (req, res) => {
-
-    console.log(req.body);
     const { id } = req.params;
     const product  = await Product.findByIdAndUpdate(id, {...req.body.product});
     // const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
@@ -155,7 +153,6 @@ const saveCost = async (req, product) => {
     product.costs = [];
 
     if(Array.isArray(costs.cost_type_id)){
-        console.log(costs);
         for(let i= 0 ; i < costs.cost_type_id.length; i++){
             let temp = {
                 
