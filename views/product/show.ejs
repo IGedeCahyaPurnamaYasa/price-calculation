@@ -4,7 +4,9 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card-body">
-                <h4 class="card-title"><%= product.name %></h4>
+                <h2 class="card-title"><%= product.name %></h2>
+                <h4>Rp. <span id="price"><%= product.price %></span></h4>
+                <p><%= product.description %></p>
                 <table>
                     <thead>
                         <tr>
@@ -16,30 +18,23 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Price</td>
-                            <td> : </td>
-                            <td></td>
-                            <td id="price"> <%= product.price %> </td>
-                        </tr>
-                        <tr>
-                            <td>Description</td>
-                            <td> : </td>
-                            <td></td>
-                            <td id="description"> <%= product.description %> </td>
-                        </tr>
-
-                        <tr>
-                            <td>Sum Ingridient</td>
+                            <td>Total Ingridient</td>
                             <td> : </td>
                             <td></td>
                             <td id="sum_ingridient">0</td>
                         </tr>
                         <tr>
-                            <td>Sum Cost</td>
+                            <td>Total Cost</td>
                             <td> : </td>
                             <td></td>
                             <td id="sum_cost">0</td>
                         </tr>
+                        <!-- <tr>
+                            <td>Total Profit</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="sum_profit">0</td>
+                        </tr> -->
                         <tr>
                             <td>Adjustment</td>
                             <td> : </td>
