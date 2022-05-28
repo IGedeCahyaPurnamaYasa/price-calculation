@@ -16,7 +16,7 @@ const ExpressError = require('./utils/expressError');
 /**
  * SCHEMA
  */
- const { productSchema, costTypeSchema} = require('./schemas');
+ const { productSchema, costTypeSchema, rootIngridientSchema} = require('./schemas');
 
 module.exports.isLoggedIn = (req, res, next) => {
      if(!req.isAuthenticated()){
@@ -31,6 +31,17 @@ module.exports.isLoggedIn = (req, res, next) => {
 
 module.exports.validateProduct = (req, res, next) => {
     const { error } = productSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }
+    else{
+        next();
+    }
+}
+
+module.exports.validateRootIngridient = (req, res, next) => {
+    const { error } = rootIngridientSchema.validate(req.body);
     if(error){
         const msg = error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400);

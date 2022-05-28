@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card-body">
+                <h4 class="card-title"><%= ingridient.name %></h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Qty</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="qty"> <%= ingridient.qty %> </td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="price"> <%= ingridient.price %> </td>
+                        </tr>
+                        <tr>
+                            <td>Unit</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="unit"> <%= ingridient.unit %> </td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="total"> <%= ingridient.total %> </td>
+                        </tr>
+                        <!-- <tr>
+                            <td>Type</td>
+                            <td> : </td>
+                            <td></td>
+                            <td id="type"> <%= ingridient.type %> </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <a href="/ingridient/<%= ingridient._id %>/edit" class="btn btn-warning text-white" style="width: 100%;"><i class="fa fa-edit"></i> Edit</a>
+                    </div>
+                    <div class="col-6">
+                        <form action="/ingridient/<%= ingridient._id %>?_method=DELETE" class="d-inline mx-1" method="POST">
+                            <button style="width: 100%;" class="btn btn-danger"><i class="fa fa-trash text-white"></i> Delete</button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/ingridient/show.js"></script>

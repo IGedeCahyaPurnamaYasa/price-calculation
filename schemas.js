@@ -39,3 +39,13 @@ module.exports.costTypeSchema = Joi.object({
         type: Joi.number().required().valid('biaya', 'keuntungan')
     })
 })
+
+module.exports.rootIngridientSchema = Joi.object({
+    ingridient: Joi.object({
+        name: Joi.string().required().escapeHTML(),
+        qty: Joi.number().required().min(0),
+        price: Joi.number().required().min(0),
+        unit: Joi.string().required().escapeHTML(),
+        total: Joi.number().required().min(0)
+    })
+})

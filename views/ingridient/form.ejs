@@ -1,0 +1,44 @@
+<% layout('layouts/boilerplate') %>
+
+
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-body">
+                    <% if(typeof ingridient !== 'undefined') { %>
+                        <h5 class="card-title">Edit <%= title %></h5>
+                    <% } else { %>
+                        <h5 class="card-title">Create New <%= title %></h5>
+                    <% } %>
+                    <form action="/ingridient<%= typeof ingridient !== 'undefined' ? `/${ingridient._id}?_method=PUT` : '' %>" method="POST" class="validated-form" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="ingridient[name]" autofocus required value="<%= typeof ingridient !== 'undefined' ? ingridient.name : '' %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="qty" class="form-label">Qty</label>
+                            <input type="text" class="form-control" id="qty" name="ingridient[qty]" autofocus required value="<%= typeof ingridient !== 'undefined' ? ingridient.qty : '' %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">price</label>
+                            <input type="text" class="form-control" id="price" name="ingridient[price]" autofocus required value="<%= typeof ingridient !== 'undefined' ? ingridient.price : '' %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="unit" class="form-label">unit</label>
+                            <input type="text" class="form-control" id="unit" name="ingridient[unit]" autofocus required value="<%= typeof ingridient !== 'undefined' ? ingridient.unit : '' %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="total" class="form-label">total</label>
+                            <input type="text" class="form-control" id="total" name="ingridient[total]" autofocus required value="<%= typeof ingridient !== 'undefined' ? ingridient.total : '' %>">
+                        </div>
+                        
+                        <button class="btn btn-primary btn-block"><%= typeof ingridient !== 'undefined' ? 'Update' : 'Add' %></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/ingridient/form.js"></script>

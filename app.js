@@ -43,6 +43,7 @@ const secret = process.env.SECRET || 'thisshouldbeabettersecret';
  const userRoutes = require('./routes/users');
  const productRoutes = require('./routes/products');
  const costTypeRoutes = require('./routes/cost_types');
+ const rootIngridientRoutes = require('./routes/root_ingridients');
 
  /**
  * DATABASE CONNECT
@@ -136,6 +137,7 @@ app.use((req, res, next) => {
 app.use('/', userRoutes);
 app.use('/product/', productRoutes);
 app.use('/cost-type/', costTypeRoutes);
+app.use('/ingridient/', rootIngridientRoutes);
 
 
 /**
