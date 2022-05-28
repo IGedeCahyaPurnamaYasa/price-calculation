@@ -66,14 +66,14 @@ module.exports.update = async (req, res) => {
 module.exports.delete = async (req, res) => {
     const { id } = req.params;
 
-    const cost = Cost.find({cost_type_id: id});
+    const cost = await Cost.find({cost_type_id: id});
 
-    if(cost){
+    if(cost.length > 0){
         req.flash('error', 'Cannot delete this cost type, already used on cost');
-        res.redirect('product');
+        res.redirect('/cost-type');
     }
-    await Product.findByIdAndDelete(id);
+    await CostType.findByIdAndDelete(id);
 
-    req.flash('success', 'Successfully deleted product');
+    req.flash('success', 'Successfully deleted cost type');
     res.redirect('/product');
 }
