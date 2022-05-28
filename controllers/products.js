@@ -74,12 +74,8 @@ module.exports.update = async (req, res) => {
     // product.images.push(...imgs);
     await product.save();
 
-    if(req.body.ingridient) {
-        await saveIngridient(req, product)
-    }
-    if(req.body.cost) {
-        await saveCost(req, product)
-    }
+    await saveIngridient(req, product)
+    await saveCost(req, product)
 
     // if(req.body.deleteImages){
     //     for(let filename of req.body.deleteImages){
@@ -109,42 +105,44 @@ const saveIngridient = async (req, product) => {
     await Ingridient.deleteMany({product_id: id})
     product.ingridients = [];
 
-    if(Array.isArray(ingridients.name)){
-        for(let i= 0 ; i < ingridients.name.length; i++){
-            console.log('ingridients.name: ', ingridients.name);
-
-            if(ingridients.name[i] !== ''){
+    if(ingridients){
+        if(Array.isArray(ingridients.name)){
+            for(let i= 0 ; i < ingridients.name.length; i++){
+                console.log('ingridients.name: ', ingridients.name);
+    
+                if(ingridients.name[i] !== ''){
+                    let temp = {
+                        product_id: id,
+                        name: ingridients.name[i],
+                        qty: ingridients.qty[i],
+                        unit: ingridients.unit[i],
+                        price: ingridients.price[i],
+                        total: ingridients.total[i]
+                    }
+            
+                    const ingrid = new Ingridient(temp);
+                    await ingrid.save();
+        
+                    product.ingridients.push(ingrid);
+                }
+            }
+        }
+        else{
+            if(ingridients.name !== ''){
                 let temp = {
                     product_id: id,
-                    name: ingridients.name[i],
-                    qty: ingridients.qty[i],
-                    unit: ingridients.unit[i],
-                    price: ingridients.price[i],
-                    total: ingridients.total[i]
+                    name: ingridients.name,
+                    qty: ingridients.qty,
+                    unit: ingridients.unit,
+                    price: ingridients.price,
+                    total: ingridients.total
                 }
         
                 const ingrid = new Ingridient(temp);
                 await ingrid.save();
-    
+        
                 product.ingridients.push(ingrid);
             }
-        }
-    }
-    else{
-        if(ingridients.name !== ''){
-            let temp = {
-                product_id: id,
-                name: ingridients.name,
-                qty: ingridients.qty,
-                unit: ingridients.unit,
-                price: ingridients.price,
-                total: ingridients.total
-            }
-    
-            const ingrid = new Ingridient(temp);
-            await ingrid.save();
-    
-            product.ingridients.push(ingrid);
         }
     }
 
@@ -158,35 +156,37 @@ const saveCost = async (req, product) => {
     await Cost.deleteMany({product_id: id})
     product.costs = [];
 
-    if(Array.isArray(costs.cost_type_id)){
-        for(let i= 0 ; i < costs.cost_type_id.length; i++){
-
-            if(costs.percentage[i] !== ''){
-                let temp = {
-                    product_id: id,
-                    cost_type_id: costs.cost_type_id[i],
-                    percentage: costs.percentage[i]
-                }
-        
-                const cost = new Cost(temp);
-                await cost.save();
+    if(costs) {
+        if(Array.isArray(costs.cost_type_id)){
+            for(let i= 0 ; i < costs.cost_type_id.length; i++){
     
-                product.costs.push(cost);
+                if(costs.percentage[i] !== ''){
+                    let temp = {
+                        product_id: id,
+                        cost_type_id: costs.cost_type_id[i],
+                        percentage: costs.percentage[i]
+                    }
+            
+                    const cost = new Cost(temp);
+                    await cost.save();
+        
+                    product.costs.push(cost);
+                }
             }
         }
-    }
-    else{
-        if(costs.percentage !== ''){
-            let temp = {
-                product_id: id,
-                cost_type_id: costs.cost_type_id,
-                percentage: costs.percentage
+        else{
+            if(costs.percentage !== ''){
+                let temp = {
+                    product_id: id,
+                    cost_type_id: costs.cost_type_id,
+                    percentage: costs.percentage
+                }
+                
+                const cost = new Cost(temp);
+                await cost.save();
+        
+                product.costs.push(cost);
             }
-            
-            const cost = new Cost(temp);
-            await cost.save();
-    
-            product.costs.push(cost);
         }
     }
 
