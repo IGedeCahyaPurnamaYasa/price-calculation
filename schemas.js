@@ -26,7 +26,7 @@ const Joi = BaseJoi.extend(extension);
 
 module.exports.productSchema = Joi.object({
     product: Joi.object({
-        name: Joi.string().required().escapeHTML(),
+        name: Joi.string().required().allow('').escapeHTML(),
         price: Joi.number().required().min(0),
         description: Joi.string().allow('').escapeHTML()
     }),
@@ -36,7 +36,7 @@ module.exports.productSchema = Joi.object({
 module.exports.costTypeSchema = Joi.object({
     cost_type: Joi.object({
         name: Joi.string().required().escapeHTML(),
-        type: Joi.number().required().valid('biaya', 'keuntungan')
+        type: Joi.number().required().valid('cost', 'profit')
     })
 })
 

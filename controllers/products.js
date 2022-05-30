@@ -3,6 +3,7 @@ const CostType = require('../models/cost_type');
 const Ingridient = require('../models/ingridient');
 const Cost = require('../models/cost');
 const mongoose = require('mongoose');
+const RootIngridient = require('../models/root_ingridient');
 const ObjectId = mongoose.Types.ObjectId;
 
 module.exports.index = async (req, res) => {
@@ -35,7 +36,12 @@ module.exports.show = async (req, res) => {
     const { id } = req.params;
 
     const product = await Product.findById(id)
-        .populate('ingridients')
+        .populate({
+            path: 'ingridients',
+            populate: {
+                path: 'root_ingridient_id'
+            }
+        })
         .populate({
             path: 'costs',
             populate: {
@@ -58,12 +64,13 @@ module.exports.renderEditForm = async (req, res) => {
         .populate('costs');
 
     const cost_types = await CostType.find({owner : req.user._id});
+    const ingridients = await RootIngridient.find({owner : req.user._id});
 
     if(!product){
         req.flash('error', 'Cannnot find that product');
         return res.redirect('/product');
     }
-    res.render('product/edit', { product: product, cost_types: cost_types });
+    res.render('product/edit', { product, cost_types, ingridients });
 }
 
 module.exports.update = async (req, res) => {
@@ -106,13 +113,14 @@ const saveIngridient = async (req, product) => {
     product.ingridients = [];
 
     if(ingridients){
-        if(Array.isArray(ingridients.name)){
+        if(Array.isArray(ingridients.total)){
             for(let i= 0 ; i < ingridients.name.length; i++){
                 console.log('ingridients.name: ', ingridients.name);
     
-                if(ingridients.name[i] !== ''){
+                if(ingridients.total[i] > 0){
                     let temp = {
                         product_id: id,
+                        root_ingridient_id: ingridients.root_ingridient_id[i],
                         name: ingridients.name[i],
                         qty: ingridients.qty[i],
                         unit: ingridients.unit[i],
@@ -128,9 +136,10 @@ const saveIngridient = async (req, product) => {
             }
         }
         else{
-            if(ingridients.name !== ''){
+            if(ingridients.total > 0){
                 let temp = {
                     product_id: id,
+                    root_ingridient_id: ingridients.root_ingridient_id,
                     name: ingridients.name,
                     qty: ingridients.qty,
                     unit: ingridients.unit,

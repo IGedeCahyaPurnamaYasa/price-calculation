@@ -77,7 +77,7 @@
                                 <% for(let i = 0; i < product.ingridients.length; i++ ) { %>
                                     <tr>
                                         <td class="text-center"><%= i+1 %></td>
-                                        <td><%= product.ingridients[i].name%></td>
+                                        <td><%= product.ingridients[i].root_ingridient_id ? product.ingridients[i].root_ingridient_id.name : product.ingridients[i].name%></td>
                                         <td class="text-right"><%= product.ingridients[i].qty%></td>
                                         <td class="text-center"><%= product.ingridients[i].unit%></td>
                                         <td class="text-right"><%= product.ingridients[i].price%></td>

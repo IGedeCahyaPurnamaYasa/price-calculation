@@ -10,9 +10,12 @@ const IngridientSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Product'
     },
+    root_ingridient_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'RootIngridient'
+    },
     name : {
-        type: String,
-        required: true
+        type: String
     },
     qty: {
         type: Number,

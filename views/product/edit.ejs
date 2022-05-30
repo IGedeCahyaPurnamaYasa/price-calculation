@@ -57,6 +57,72 @@
             </div>
             <div class="col-md-9">
                 <div class="row mb-5">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="text-center">
+                                    <h3>Ingridient</h3>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="" class="form-label">Name</label>
+                                    <select id="temp_ingridient" class="form-control select2 temp_ingridient_select2" onchange="set_temp_price(event); calculate_temp_total();">
+                                        <option value=""></option>
+                                        <% for (let ingrid of ingridients) {%>
+                                            <option value="<%= ingrid._id %>" price="<%= ingrid.price %>"><%= ingrid.name %></option>                                                        
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_qty" class="form-label">Qty</label>
+                                    <input type="text" class="form-control" id="temp_qty" onkeyup="calculate_temp_total();">
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_unit" class="form-label">Unit</label>
+                                    <input type="text" class="form-control" id="temp_unit">
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_price" class="form-label">Price/Unit</label>
+                                    <input type="text" class="form-control" id="temp_price" onkeyup="calculate_temp_total()">
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_total" class="form-label">Total</label>
+                                    <input type="text" class="form-control" id="temp_total" onkeyup="calculate_temp_price();">
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button class="btn btn-primary" id="add_temp_ingridient" onclick="clone_temp_ingridient(event)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="text-center">
+                                    <h3>Cost</h3>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="" class="form-label">Name</label>
+                                    <select class="form-control select2 cost_temp_select2" id="temp_cost">
+                                        <option value=""></option>
+                                        <% for (let cost_type of cost_types) {%>
+                                            <option value="<%= cost_type._id %>"><%= cost_type.name %></option>                                                        
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_percentage" class="form-label">Percentage</label>
+                                    <input type="text" class="form-control" id="temp_percentage">
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button class="btn btn-primary" id="add_temp_cost"  onclick="clone_temp_cost(event)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row mb-5">
                     <div class="col-12">
                         <div class="card-header">
                             <div class="float-right">
@@ -69,6 +135,7 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th style="width: 20%;">Name</th>
+                                        <th style="width: 20%;">Name</th>
                                         <th style="width: 10%;">Qty</th>
                                         <th style="width: 10%;">Unit</th>
                                         <th style="width: 20%;">Price/Unit</th>
@@ -79,6 +146,17 @@
                                 <tbody id="table_ingridient_body">
                                     <% for(let i = 0; i < product.ingridients.length; i++ ) { %>
                                         <tr id="ingridient-<%= i %>" class="ingridient-row">
+                                            <td>
+                                                <select name="ingridient[root_ingridient_id]" onchange="set_price(event); calculate_total(event);" class="form-control select2 ingridient_select2" id="">
+                                                    <% for (let ingridient of ingridients) {%>
+                                                        <% if (ingridient._id.equals(product.ingridients[i].root_ingridient_id)) { %>
+                                                            <option value="<%= ingridient._id %>" selected price="<%= ingridient.price %>"><%= ingridient.name %></option>
+                                                        <% } else { %>
+                                                            <option value="<%= ingridient._id %>" price="<%= ingridient.price %>"><%= ingridient.name %></option>                                                        
+                                                        <% } %>
+                                                    <% } %>
+                                                </select>
+                                            </td>
                                             <td>
                                                 <input type="text" class="form-control ingridient_name" name="ingridient[name]" value="<%= product.ingridients[i].name%>">
                                             </td>
@@ -156,6 +234,14 @@
 <template id="template-ingridient-row">
     <tr id="ingridient-0" class="ingridient-row">
         <td>
+            <select name="ingridient[root_ingridient_id]" class="form-control select2 ingridient_select2" id="" onchange="set_price(event); calculate_total(event);">
+                <option value=""></option>
+                <% for (let ingrid of ingridients) {%>
+                    <option value="<%= ingrid._id %>" price="<%= ingrid.price %>"><%= ingrid.name %></option>                                                        
+                <% } %>
+            </select>
+        </td>
+        <td>
             <input name="ingridient[name]" type="text" class="form-control ingridient_name">
         </td>
         <td>
@@ -180,14 +266,15 @@
 <template id="template-cost-row">
     <tr id="cost-0" class="cost-row">
         <td>
-            <select name="cost[cost_type_id]" class="form-control select2" id="">
+            <select name="cost[cost_type_id]" class="form-control select2 cost_select2" id="">
+                <option value=""></option>
                 <% for (let cost_type of cost_types) {%>
                     <option value="<%= cost_type._id %>"><%= cost_type.name %></option>                                                        
                 <% } %>
             </select>
         </td>
         <td>
-            <input name="cost[percentage]" onkeyup="calculate_total_cost()" type="text" class="form-control cost_percentage">
+            <input name="cost[percentage]" onkeyup="calculate_total_cost()" type="text" class="form-control cost_percentage text-right">
         </td>
         <td>
             <button onclick="$(this).closest('tr').remove(); calculate_total_cost(); " class="btn btn-danger"><i class="fa fa-trash"></i></button>
