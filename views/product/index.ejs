@@ -12,18 +12,26 @@
                         <table id="table" class="display" width="100%">
                             <thead>
                                 <tr class="text-center">
-                                    <th style="width: 10%;">No</th>
-                                    <th style="width: 40%;">Name</th>
-                                    <th style="width: 30%;">Price</th>
-                                    <th style="width: 20%;">Action</th>
+                                    <th style="width: 5%;">No</th>
+                                    <th style="width: 20%;">Name</th>
+                                    <th style="width: 15%;">Price</th>
+                                    <th style="width: 15%;">Total Ingridient</th>
+                                    <th style="width: 15%;">Total Cost</th>
+                                    <th style="width: 15%;">Total Profit</th>
+                                    <th style="width: 10%;">Adjustment</th>
+                                    <th style="width: 10%;">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% for(let i = 0; i < products.length; i++ ) { %>
                                     <tr>
                                         <td class="text-center"><%= i+1 %></td>
-                                        <td><%= products[i].name%></td>
-                                        <td><%= products[i].price%></td>
+                                        <td><%= products[i].name %></td>
+                                        <td><%= products[i].price %></td>
+                                        <td><%= products[i].total_ingridient %></td>
+                                        <td><%= products[i].total_cost %></td>
+                                        <td><%= products[i].total_profit %></td>
+                                        <td><%= products[i].adjustment %></td>
                                         <td>
                                             <div class="d-flex justify-content-center align-items-center">
                                                 <a href="/product/<%= products[i]._id %>"><i class="fa fa-eye mx-1"></i></a>

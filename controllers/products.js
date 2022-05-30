@@ -10,9 +10,36 @@ module.exports.index = async (req, res) => {
     
     const products = await Product.find({})
         .populate('ingridients')
-        .populate('costs');
-        // console.log(products);
-        // console.log(products[0]);
+        .populate({
+            path: 'costs',
+            populate: {
+                path: 'cost_type_id'
+            }
+        });
+    for(let i = 0 ; i < products.length; i++){
+        let total_ingridient = 0;
+        let total_cost = 0;
+        let total_profit = 0;
+
+        for(let ingridient of products[i].ingridients){
+            total_ingridient += ingridient.total
+        }
+
+        for(let cost of products[i].costs){
+            if(cost.cost_type_id.type === 'profit'){
+                total_profit += total_ingridient * (cost.percentage / 100)
+            }
+            else{
+                total_cost += total_ingridient * (cost.percentage / 100)
+            }
+        }
+
+        products[i].total_ingridient = total_ingridient
+        products[i].total_profit = total_profit
+        products[i].total_cost = total_cost
+        products[i].adjustment = products[i].price - (total_ingridient + total_cost + total_profit);
+    }
+
     res.render('product/index', {products});
 }
 

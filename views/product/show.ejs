@@ -29,12 +29,12 @@
                             <td></td>
                             <td id="sum_cost">0</td>
                         </tr>
-                        <!-- <tr>
+                        <tr>
                             <td>Total Profit</td>
                             <td> : </td>
                             <td></td>
                             <td id="sum_profit">0</td>
-                        </tr> -->
+                        </tr>
                         <tr>
                             <td>Adjustment</td>
                             <td> : </td>
@@ -106,7 +106,7 @@
                                     <tr>
                                         <td class="text-center"><%= i+1 %></td>
                                         <td><%= product.costs[i].cost_type_id.name%></td>
-                                        <td class="cost_percentage text-center"><%= product.costs[i].percentage%></td>
+                                        <td class="cost_percentage text-center <%= product.costs[i].cost_type_id.type %>"><%= product.costs[i].percentage%></td>
                                     </tr>
                                 <% } %> 
 
