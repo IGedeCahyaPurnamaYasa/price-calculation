@@ -135,7 +135,7 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th style="width: 20%;">Name</th>
-                                        <th style="width: 20%;">Name</th>
+                                        <!-- <th style="width: 20%;">Name</th> -->
                                         <th style="width: 10%;">Qty</th>
                                         <th style="width: 10%;">Unit</th>
                                         <th style="width: 20%;">Price/Unit</th>
@@ -157,9 +157,9 @@
                                                     <% } %>
                                                 </select>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <input type="text" class="form-control ingridient_name" name="ingridient[name]" value="<%= product.ingridients[i].name%>">
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <input type="text" class="form-control ingridient_qty text-right" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[qty]" value="<%= product.ingridients[i].qty%>">
                                             </td>
