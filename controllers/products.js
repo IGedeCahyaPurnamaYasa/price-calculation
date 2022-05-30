@@ -7,7 +7,12 @@ const RootIngridient = require('../models/root_ingridient');
 const ObjectId = mongoose.Types.ObjectId;
 
 module.exports.index = async (req, res) => {
-    const products = await Product.find({});
+    
+    const products = await Product.find({})
+        .populate('ingridients')
+        .populate('costs');
+        // console.log(products);
+        // console.log(products[0]);
     res.render('product/index', {products});
 }
 
@@ -114,14 +119,13 @@ const saveIngridient = async (req, product) => {
 
     if(ingridients){
         if(Array.isArray(ingridients.total)){
-            for(let i= 0 ; i < ingridients.name.length; i++){
-                console.log('ingridients.name: ', ingridients.name);
-    
+            for(let i= 0 ; i < ingridients.total.length; i++){
+                console.log(ingridients);
                 if(ingridients.total[i] > 0){
                     let temp = {
                         product_id: id,
                         root_ingridient_id: ingridients.root_ingridient_id[i],
-                        name: ingridients.name[i],
+                        // name: ingridients.name ? ingridients.name[i] : '',
                         qty: ingridients.qty[i],
                         unit: ingridients.unit[i],
                         price: ingridients.price[i],
@@ -140,7 +144,7 @@ const saveIngridient = async (req, product) => {
                 let temp = {
                     product_id: id,
                     root_ingridient_id: ingridients.root_ingridient_id,
-                    name: ingridients.name,
+                    // name: ingridients.name,
                     qty: ingridients.qty,
                     unit: ingridients.unit,
                     price: ingridients.price,
