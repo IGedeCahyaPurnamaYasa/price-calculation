@@ -2,7 +2,11 @@
 
 const app = {
     start(){
-        $('#table').DataTable({})
+
+        console.log($('#table'));
+        $('#table').DataTable({
+            responsive: true
+        })
     }
 }
 
