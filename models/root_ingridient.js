@@ -25,6 +25,10 @@ const RootIngridientSchema = new Schema({
     total: {
         type: Number,
         required: true
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     }
 }, opts)
 

@@ -4,8 +4,8 @@ const Ingridient = require('../models/ingridient');
 const title = 'Ingridient';
 
 module.exports.index = async (req, res) => {
+    // const ingridients = await RootIngridient.find({owner: req.user._id});
     const ingridients = await RootIngridient.find({});
-    // const title = 'Ingridient'
     res.render('ingridient/index', {ingridients, title});
 }
 
@@ -51,6 +51,7 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.update = async (req, res) => {
     const { id } = req.params;
     const ingridient  = await RootIngridient.findByIdAndUpdate(id, {...req.body.ingridient});
+    ingridient.owner = req.user._id;
 
     await ingridient.save();
     await re_calculate_ingridient_product(ingridient._id, req.body.ingridient);
