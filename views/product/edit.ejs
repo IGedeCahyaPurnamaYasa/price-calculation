@@ -131,54 +131,53 @@
                             <h4 class="card-title">Ingridients</h4>
                         </div>
                         <div class="card-body">
-                            <table id="table_ingridient" class="display" width="100%">
-                                <thead>
-                                    <tr class="text-center">
-                                        <th style="width: 20%;">Name</th>
-                                        <!-- <th style="width: 20%;">Name</th> -->
-                                        <th style="width: 10%;">Qty</th>
-                                        <th style="width: 10%;">Unit</th>
-                                        <th style="width: 20%;">Price/Unit</th>
-                                        <th style="width: 20%;">Total</th>
-                                        <th style="width: 10%;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table_ingridient_body">
-                                    <% for(let i = 0; i < product.ingridients.length; i++ ) { %>
-                                        <tr id="ingridient-<%= i %>" class="ingridient-row">
-                                            <td>
-                                                <select name="ingridient[root_ingridient_id]" onchange="set_price(event); calculate_total(event);" class="form-control select2 ingridient_select2" id="">
-                                                    <% for (let ingridient of ingridients) {%>
-                                                        <% if (ingridient._id.equals(product.ingridients[i].root_ingridient_id)) { %>
-                                                            <option value="<%= ingridient._id %>" selected price="<%= ingridient.price %>"><%= ingridient.name %></option>
-                                                        <% } else { %>
-                                                            <option value="<%= ingridient._id %>" price="<%= ingridient.price %>"><%= ingridient.name %></option>                                                        
-                                                        <% } %>
-                                                    <% } %>
-                                                </select>
-                                            </td>
-                                            <!-- <td>
-                                                <input type="text" class="form-control ingridient_name" name="ingridient[name]" value="<%= product.ingridients[i].name%>">
-                                            </td> -->
-                                            <td>
-                                                <input type="text" class="form-control ingridient_qty text-right" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[qty]" value="<%= product.ingridients[i].qty%>">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control ingridient_unit text-center" name="ingridient[unit]" value="<%= product.ingridients[i].unit%>">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control ingridient_price text-right" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[price]" value="<%= product.ingridients[i].price%>">
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control ingridient_total text-right" onkeyup="calculate_price(event)" name="ingridient[total]" value="<%= product.ingridients[i].total%>">
-                                            </td>
-                                            <td>
-                                                <button onclick="$(this).closest('tr').remove(); calculate_total_ingridient();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                            </td>
+                            <div class="table-responsive">
+
+                                <table id="table_ingridient" class="display table" width="100%">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th style="width: 20%;">Name</th>
+                                            <th style="width: 10%;">Qty</th>
+                                            <th style="width: 10%;">Unit</th>
+                                            <th style="width: 20%;">Price/Unit</th>
+                                            <th style="width: 20%;">Total</th>
+                                            <th style="width: 10%;">Action</th>
                                         </tr>
-                                    <% } %> 
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody id="table_ingridient_body">
+                                        <% for(let i = 0; i < product.ingridients.length; i++ ) { %>
+                                            <tr id="ingridient-<%= i %>" class="ingridient-row">
+                                                <td>
+                                                    <select name="ingridient[root_ingridient_id]" onchange="set_price(event); calculate_total(event);" class="form-control select2 ingridient_select2" id="">
+                                                        <% for (let ingridient of ingridients) {%>
+                                                            <% if (ingridient._id.equals(product.ingridients[i].root_ingridient_id)) { %>
+                                                                <option value="<%= ingridient._id %>" selected price="<%= ingridient.price %>"><%= ingridient.name %></option>
+                                                            <% } else { %>
+                                                                <option value="<%= ingridient._id %>" price="<%= ingridient.price %>"><%= ingridient.name %></option>                                                        
+                                                            <% } %>
+                                                        <% } %>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control ingridient_qty text-right" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[qty]" value="<%= product.ingridients[i].qty%>">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control ingridient_unit text-center" name="ingridient[unit]" value="<%= product.ingridients[i].unit%>">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control ingridient_price text-right" onkeyup="calculate_total(event); calculate_total_ingridient(); calculate_total_cost();" name="ingridient[price]" value="<%= product.ingridients[i].price%>">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control ingridient_total text-right" onkeyup="calculate_price(event)" name="ingridient[total]" value="<%= product.ingridients[i].total%>">
+                                                </td>
+                                                <td>
+                                                    <button onclick="$(this).closest('tr').remove(); calculate_total_ingridient();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        <% } %> 
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,38 +190,40 @@
                             <h4 class="card-title">Cost</h4>
                         </div>
                         <div class="card-body">
-                            <table id="table_cost" class="display" width="100%">
-                                <thead>
-                                    <tr class="text-center">
-                                        <th style="width: 50%;">Name</th>
-                                        <th style="width: 10%;">Percentage</th>
-                                        <th style="width: 10%;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table_cost_body">
-                                    <% for(let i = 0; i < product.costs.length; i++ ) { %>
-                                        <tr id="cost-<%= i %>" class="cost-row">
-                                            <td>
-                                                <select name="cost[cost_type_id]" class="form-control select2" id="">
-                                                    <% for (let cost_type of cost_types) {%>
-                                                        <% if (product.costs[i].cost_type_id.equals(cost_type._id)) { %>
-                                                            <option value="<%= cost_type._id %>" selected><%= cost_type.name %></option>
-                                                        <% } else { %>
-                                                            <option value="<%= cost_type._id %>"><%= cost_type.name %></option>                                                        
-                                                        <% } %>
-                                                    <% } %>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control cost_percentage text-right" onkeyup="calculate_total_cost()" max="100" min="0" name="cost[percentage]" value="<%= product.costs[i].percentage%>">
-                                            </td>
-                                            <td>
-                                                <button onclick="$(this).closest('tr').remove(); calculate_total_cost();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                            </td>
+                            <div class="table-responsive">
+                                <table id="table_cost" class="display table" width="100%">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th style="width: 50%;">Name</th>
+                                            <th style="width: 10%;">Percentage</th>
+                                            <th style="width: 10%;">Action</th>
                                         </tr>
-                                    <% } %> 
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody id="table_cost_body">
+                                        <% for(let i = 0; i < product.costs.length; i++ ) { %>
+                                            <tr id="cost-<%= i %>" class="cost-row">
+                                                <td>
+                                                    <select name="cost[cost_type_id]" class="form-control select2" id="">
+                                                        <% for (let cost_type of cost_types) {%>
+                                                            <% if (product.costs[i].cost_type_id.equals(cost_type._id)) { %>
+                                                                <option value="<%= cost_type._id %>" selected><%= cost_type.name %></option>
+                                                            <% } else { %>
+                                                                <option value="<%= cost_type._id %>"><%= cost_type.name %></option>                                                        
+                                                            <% } %>
+                                                        <% } %>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control cost_percentage text-right" onkeyup="calculate_total_cost()" max="100" min="0" name="cost[percentage]" value="<%= product.costs[i].percentage%>">
+                                                </td>
+                                                <td>
+                                                    <button onclick="$(this).closest('tr').remove(); calculate_total_cost();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        <% } %> 
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

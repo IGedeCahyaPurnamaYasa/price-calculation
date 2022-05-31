@@ -1,15 +1,15 @@
 <% layout('layouts/boilerplate') %>
 
-    <div class="container d-flex justify-content-center align-items-center mt-2 ">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card-shadow">
-                    <div class="form-group d-flex justify-content-end">
-                        <a href="/cost-type/new" class="btn btn-primary">Add Cost Type</a>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-titl">List Cost Type</h5>
-                        <table id="table" class="display" width="100%">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-shadow">
+                <div class="form-group d-flex justify-content-end">
+                    <a href="/cost-type/new" class="btn btn-primary">Add Cost Type</a>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">List Cost Type</h5>
+                    <div class="table-responsive">
+                        <table id="table" class="display table" width="100%">
                             <thead>
                                 <tr class="text-center">
                                     <th style="width: 10%;">No</th>
@@ -33,7 +33,7 @@
                                                     <button style="border: none;"><i class="fa fa-trash text-danger"></i></button>
                                                 </form>
                                                 <!-- <a href="/cost-type/<%= cost_types[i]._id %>"></a> -->
-
+    
                                             </div>
                                         </td>
                                     </tr>
