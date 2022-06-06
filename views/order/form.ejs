@@ -13,7 +13,7 @@
                     <% } %>
                     <div class="form-group mb-2">
                         <label for="order_for">Customer Name</label>
-                        <input type="text" id="order_for" name="order[order_for]" class="form-control">
+                        <input type="text" id="order_for" name="order[order_for]" class="form-control" value="<%= typeof order !== 'undefined' ? order.order_for : '' %>" >
                     </div>
                     <div class="form-group mb-2">
                         <label for="order_code">Order Code</label>
@@ -21,23 +21,23 @@
                     </div>
                     <div class="form-group mb-2">
                         <label for="order_date">Order Date</label>
-                        <input type="text" id="order_date" name="order[order_date]" class="form-control datepicker">
+                        <input type="text" id="order_date" name="order[order_date]" class="form-control datepicker" value="<%= typeof order !== 'undefined' ? moment(order.order_date).format('Y-MM-DD') : '' %>">
                     </div>
                     <div class="form-group mb-2">
                         <label for="order_category">Order Category</label>
                         <select id="order_category" name="order[order_category]" class="form-control select2">
                             <option value=""></option>
-                            <option value="pickup">Pick Up</option>
-                            <option value="delivery">Delivery</option>
+                            <option value="pickup" <%= typeof order !== 'undefined' ? (order.order_category == 'pickup' ? 'selected' : '') : '' %> >Pick Up</option>
+                            <option value="delivery" <%= typeof order !== 'undefined' ? (order.order_category == 'delivery' ? 'selected' : '') : '' %> >Delivery</option>
                         </select>
                     </div>
                     <div class="form-group mb-2">
                         <label for="date_taken">Pick Date</label>
-                        <input type="text" id="date_taken" name="order[date_taken]" class="form-control datepicker">
+                        <input type="text" id="date_taken" name="order[date_taken]" class="form-control datepicker" value="<%= typeof order !== 'undefined' ? moment(order.date_taken).format('Y-MM-DD') : '' %>">
                     </div>
                     <div class="form-group mb-2">
                         <label for="order_address">Address</label>
-                        <textarea name="order[order_address]" id="order_address" cols="" rows="" class="form-control"></textarea>
+                        <textarea name="order[order_address]" id="order_address" cols="" rows="" class="form-control"><%= typeof order !== 'undefined' ? order.order_address : '' %></textarea>
                     </div>
                     <div class="form-group mb-2">
                         <label for="total_order">Total</label>
@@ -107,7 +107,36 @@
                                         </tr>
                                     </thead>
                                     <tbody id="table_order_body">
-                                        
+                                        <% if(typeof order !== 'undefined'){ %>
+                                            <% for(let detail of order.order_details){ %>
+                                                <tr>
+                                                    <td>
+                                                        <select name="order_detail[product_id]" class="form-control select2 order_detail_select2" id="" onchange="set_price(event); calculate_total(event);">
+                                                            <option value=""></option>
+                                                            <% for (let product of products) { %>
+                                                                <% if(detail.product_id.toString() == product._id.toString()) { %>
+                                                                    <option value="<%= product._id %>" price="<%= product.price %>" selected><%= product.name %></option>                                                        
+                                                                <% } else { %>
+                                                                    <option value="<%= product._id %>" price="<%= product.price %>"><%= product.name %></option>                                                        
+                                                                <% } %>
+                                                            <% } %>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input name="order_detail[qty]" value="<%= detail.qty %>" onkeyup="calculate_total(event); calculate_total_order();" type="text" class="form-control order_detail_qty text-right">
+                                                    </td>
+                                                    <td>
+                                                        <input name="order_detail[price]" value="<%= detail.price %>" readonly onkeyup="calculate_total(event); calculate_total_order();" type="text" class="form-control order_detail_price text-right">
+                                                    </td>
+                                                    <td>
+                                                        <input name="order_detail[total]" value="<%= detail.total %>" type="text" class="form-control order_detail_total text-right">
+                                                    </td>
+                                                    <td>
+                                                        <button onclick="$(this).closest('tr').remove(); calculate_total_order();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        <% } %>
                                     </tbody>
                                 </table>
                             </div>

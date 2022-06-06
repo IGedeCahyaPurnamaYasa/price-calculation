@@ -26,7 +26,7 @@ const orderController = require('../controllers/orders');
 router.route('/')
     .get(isLoggedIn, catchAsync(orderController.index))
     .post(isLoggedIn, validateOrder, catchAsync(orderController.store));
-
+    
 router.get('/new', isLoggedIn, orderController.renderNewForm);
 
 router.route('/:id')

@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const Payment = require('../models/payment');
 const Order = require('../models/order');
 const OrderDetail = require('../models/order_detail');
 
@@ -40,7 +41,6 @@ module.exports.store = async(req, res, next) => {
 }
 
 const saveDetailOrder = async (req, order) => {
-    // const { id } = req.params;
     const id = order.id;
 
     let order_details = req.body.order_detail;
@@ -51,9 +51,7 @@ const saveDetailOrder = async (req, order) => {
 
     if(order_details){
         if(Array.isArray(order_details.total)){
-            for (let i = 0; i < order_details.total.length; i++) {
-                const element = array[i];
-                
+            for (let i = 0; i < order_details.total.length; i++) {                
                 if(order_details.total[i] > 0) {
                     let temp = {
                         order_id: id,
@@ -113,30 +111,44 @@ module.exports.show = async (req, res) => {
 
 module.exports.renderEditForm = async (req, res) => {
     const {id} = req.params;
-    const cost_type = await Order.findById(id);
+    const order = await Order.findById(id)
+        .populate({
+            path: 'order_details'
+        })
 
-    if(!cost_type){
-        req.flash('error', 'Cannnot find that cost_type');
-        return res.redirect('/cost_type');
+    const products = await Product.find({owner: req.user._id})
+
+    if(!order){
+        req.flash('error', 'Cannnot find that order');
+        return res.redirect('/order');
     }
 
-    res.render('cost_type/form', { cost_type: cost_type });
+    res.render('order/form', {title, order, products, moment});
 }
 
 
 module.exports.update = async (req, res) => {
     const { id } = req.params;
-    const cost_type  = await Order.findByIdAndUpdate(id, {...req.body.cost_type});
+    const order  = await Order.findByIdAndUpdate(id, {...req.body.order});
 
-    await cost_type.save();
+    await order.save();
     
-    req.flash('success', 'Successfully updated cost type!');
-    res.redirect(`/cost-type`);
+    await saveDetailOrder(req, order)
+    
+    req.flash('success', 'Successfully updated order!');
+    res.redirect(`/order`);
 }
 
 
 module.exports.delete = async (req, res) => {
     const { id } = req.params;
+    
+    const payment = await Payment.find({order_id: id});
+
+    if(payment.length > 0){
+        req.flash('error', 'Cannot delete this order, already process or paid');
+        res.redirect('/order');
+    }
 
     await Order.findByIdAndDelete(id);
 
