@@ -1,0 +1,148 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <form action="/order/<%= typeof order !== 'undefined' ? `/${order._id}?_method=PUT` : '' %>" id="form-order" method="POST" class="validated-form" novalidate">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card-body">
+                    <% if(typeof order !== 'undefined') { %>
+                        <h5 class="card-title">Edit <%= title %></h5>
+                    <% } else { %>
+                        <h5 class="card-title">Create New <%= title %></h5>
+                    <% } %>
+                    <div class="form-group mb-2">
+                        <label for="order_for">Customer Name</label>
+                        <input type="text" id="order_for" name="order[order_for]" class="form-control">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="order_code">Order Code</label>
+                        <input type="text" id="order_code" name="order[order_code]" class="form-control" readonly value="<%= typeof order !== 'undefined' ? order.order_code : code %>">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="order_date">Order Date</label>
+                        <input type="text" id="order_date" name="order[order_date]" class="form-control datepicker">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="order_category">Order Category</label>
+                        <select id="order_category" name="order[order_category]" class="form-control select2">
+                            <option value=""></option>
+                            <option value="pickup">Pick Up</option>
+                            <option value="delivery">Delivery</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="date_taken">Pick Date</label>
+                        <input type="text" id="date_taken" name="order[date_taken]" class="form-control datepicker">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="order_address">Address</label>
+                        <textarea name="order[order_address]" id="order_address" cols="" rows="" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="total_order">Total</label>
+                        <input type="text" id="total_order" name="order[total_order]" class="form-control" readonly value="<%= typeof order !== 'undefined' ? order.total_order : '0' %>">
+                    </div>
+
+                    <div class="col-12 mt-5">
+                        <a href="#" class="btn btn-success" id="save-product" onclick="save(event)" style="width: 100%">Save</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row mb-5">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-center">
+                                    <h3>Order Detail Input</h3>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="" class="form-label">Product</label>
+                                    <select id="temp_product" class="form-control select2 temp_order_detail_select2" onchange="set_temp_price(event); calculate_temp_total();">
+                                        <option value=""></option>
+                                        <% for (let product of products) {%>
+                                            <option value="<%= product._id %>" price="<%= product.price %>"><%= product.name %></option>                                                        
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_qty" class="form-label">Qty</label>
+                                    <input type="text" class="form-control" id="temp_qty" onkeyup="calculate_temp_total();">
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_price" class="form-label">Price</label>
+                                    <input type="text" class="form-control" id="temp_price" onkeyup="calculate_temp_total()">
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="temp_total" class="form-label">Total</label>
+                                    <input type="text" class="form-control" id="temp_total" onkeyup="calculate_temp_price();">
+                                </div>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button class="btn btn-primary" id="add_temp_ingridient" onclick="clone_temp_order_detail(event)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <div class="card-header">
+                            <div class="float-right">
+                                <button id="addOrder" onclick="clone()" class="btn btn-primary btn-block" type="button"><i class="fa fa-plus"></i>Tambah</button>
+                            </div>
+                            <h4 class="card-title">Order Detail</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+
+                                <table id="table_order" class="display table" width="100%">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th style="width: 20%;">Product</th>
+                                            <th style="width: 10%;">Qty</th>
+                                            <th style="width: 20%;">Price</th>
+                                            <th style="width: 20%;">Total</th>
+                                            <th style="width: 10%;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_order_body">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<template id="template-order-detail-row">
+    <tr id="order_detail-0" class="order-detail-row">
+        <td>
+            <select name="order_detail[product_id]" class="form-control select2 order_detail_select2" id="" onchange="set_price(event); calculate_total(event);">
+                <option value=""></option>
+                <% for (let product of products) {%>
+                    <option value="<%= product._id %>" price="<%= product.price %>"><%= product.name %></option>                                                        
+                <% } %>
+            </select>
+        </td>
+        <td>
+            <input name="order_detail[qty]" onkeyup="calculate_total(event); calculate_total_order();" type="text" class="form-control order_detail_qty text-right">
+        </td>
+        <td>
+            <input name="order_detail[price]" readonly onkeyup="calculate_total(event); calculate_total_order();" type="text" class="form-control order_detail_price text-right">
+        </td>
+        <td>
+            <input name="order_detail[total]" type="text" class="form-control order_detail_total text-right">
+        </td>
+        <td>
+            <button onclick="$(this).closest('tr').remove(); calculate_total_order();" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+        </td>
+    </tr>
+</template>
+
+<script src="/js/order/form.js"></script>

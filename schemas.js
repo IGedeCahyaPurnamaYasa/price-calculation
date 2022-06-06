@@ -49,3 +49,15 @@ module.exports.rootIngridientSchema = Joi.object({
         total: Joi.number().required().min(0)
     })
 })
+
+module.exports.orderSchema = Joi.object({
+    order: Joi.object({
+        order_for: Joi.string().required().escapeHTML(),
+        order_code: Joi.string().required().escapeHTML(),
+        total_order: Joi.number().required().min(0),
+        order_address: Joi.string().required().escapeHTML(),
+        order_date: Joi.string().required(),
+        date_taken: Joi.string().required(),
+        order_category: Joi.string().required().valid('pickup', 'delivery')
+    })
+})

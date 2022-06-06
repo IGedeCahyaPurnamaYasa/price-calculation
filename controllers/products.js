@@ -147,7 +147,7 @@ const saveIngridient = async (req, product) => {
     if(ingridients){
         if(Array.isArray(ingridients.total)){
             for(let i= 0 ; i < ingridients.total.length; i++){
-                console.log(ingridients);
+
                 if(ingridients.total[i] > 0){
                     let temp = {
                         product_id: id,

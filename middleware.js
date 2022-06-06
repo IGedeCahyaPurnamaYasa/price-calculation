@@ -16,7 +16,12 @@ const ExpressError = require('./utils/expressError');
 /**
  * SCHEMA
  */
- const { productSchema, costTypeSchema, rootIngridientSchema} = require('./schemas');
+ const { 
+     productSchema, 
+     costTypeSchema,
+     rootIngridientSchema,
+     orderSchema
+    } = require('./schemas');
 
 module.exports.isLoggedIn = (req, res, next) => {
      if(!req.isAuthenticated()){
@@ -66,6 +71,19 @@ module.exports.validateProductPartial = (req, res, next) => {
 module.exports.validateCostType = (req, res, next) => {
 
     const { error } = costTypeSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }
+    else{
+        next();
+    }
+}
+
+module.exports.validateOrder = (req, res, next) => {
+    let order = req.body.order ?? null;
+    console.log('order: ', order);
+    const { error } = orderSchema.validate({order});
     if(error){
         const msg = error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400);
