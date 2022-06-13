@@ -21,7 +21,7 @@
                     </div>
                     <div class="form-group mb-2">
                         <label for="order_date">Order Date</label>
-                        <input type="text" id="order_date" name="order[order_date]" class="form-control datepicker" value="<%= typeof order !== 'undefined' ? moment(order.order_date).format('Y-MM-DD') : '' %>">
+                        <input type="text" id="order_date" name="order[order_date]" class="form-control datepicker" value="<%= typeof order !== 'undefined' ? moment(order.order_date).format('Y-MM-DD') : moment().format('Y-MM-DD') %>">
                     </div>
                     <div class="form-group mb-2">
                         <label for="order_category">Order Category</label>

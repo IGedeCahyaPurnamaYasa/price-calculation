@@ -16,17 +16,8 @@ module.exports.index = async (req, res) => {
 module.exports.renderNewForm = async (req, res) => {
     const products = await Product.find({owner: req.user._id})
     const code = helper.generate_code('ORD');
-    res.render('order/form', {products, code, title});
+    res.render('order/form', {products, code, title, moment});
 }
-
-// const generate_code = async (header) => {
-//     let new_date = new Date().toISOString().split('T');
-//     let time = new_date[1].replaceAll(':', '').replace('Z', '').replace('.', '');
-//     let date = new_date[0].replaceAll('-', '');
-//     date = date + time;
-
-//     return header + '-' + date;
-// }
 
 module.exports.store = async(req, res, next) => {
     const order = new Order(req.body.order);
@@ -45,7 +36,6 @@ const saveDetailOrder = async (req, order) => {
     const id = order.id;
 
     let order_details = req.body.order_detail;
-    console.log('order_details: ', order_details);
 
     await OrderDetail.deleteMany({order_id: id})
     order.order_details = [];
@@ -150,9 +140,11 @@ module.exports.delete = async (req, res) => {
         req.flash('error', 'Cannot delete this order, already process or paid');
         res.redirect('/order');
     }
+    else{
+        await Order.findByIdAndDelete(id);
+    
+        req.flash('success', 'Successfully deleted order');
+        res.redirect('/order');
+    }
 
-    await Order.findByIdAndDelete(id);
-
-    req.flash('success', 'Successfully deleted order');
-    res.redirect('/order');
 }
