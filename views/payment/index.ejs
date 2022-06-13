@@ -1,0 +1,54 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-shadow">
+                <div class="form-group clearfix">
+                    <a href="/payment/new" class="btn btn-primary float-right">Add <%= title %></a>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">List <%= title %></h5>
+                    <div class="table-responsive">
+                        <table id="table" class="display table" width="100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width: 10%;">No</th>
+                                    <th style="width: 25%;">Payment Code Code</th>
+                                    <th style="width: 25%;">Order Code</th>
+                                    <th style="width: 15%;">Total Order</th>
+                                    <th style="width: 15%;">Payment</th>
+                                    <th style="width: 15%;">Payment Date</th>
+                                    <th style="width: 10%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(let i = 0; i < payments.length; i++ ) { %>
+                                    <tr>
+                                        <td class="text-center"><%= i+1 %></td>
+                                        <td class="text-center"><%= payments[i].payment_code %></td>
+                                        <td class="text-center"><a href="/order/<%= payments[i].order_id._id %>"><%= payments[i].order_id.order_code %></a></td>
+                                        <td class="text-right"><%= payments[i].order_id.total_order %></td>
+                                        <td class="text-right"><%= payments[i].payment_value %></td>
+                                        <td class="text-center"><%= moment(payments[i].payment_date).format('YYYY-MM-DD') %></td>
+                                        <td>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <a href="/payment/<%= payments[i]._id %>"><i class="fa fa-eye mx-1"></i></a>
+                                                <a href="/payment/<%= payments[i]._id %>/edit"><i class="fa fa-edit text-warning mx-1"></i></a>
+                                                <form action="/payment/<%= payments[i]._id %>?_method=DELETE" class="d-inline mx-1" method="POST">
+                                                    <button style="border: none;"><i class="fa fa-trash text-danger"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% } %> 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+    <script src="/js/payment/index.js"></script>

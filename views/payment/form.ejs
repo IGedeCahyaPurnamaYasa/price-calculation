@@ -1,0 +1,72 @@
+<% layout('layouts/boilerplate') %>
+
+
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-body">
+                    <% if(typeof payment !== 'undefined') { %>
+                        <h5 class="card-title">Edit <%= title %></h5>
+                    <% } else { %>
+                        <h5 class="card-title">Create New <%= title %></h5>
+                    <% } %>
+                    <form action="/payment<%= typeof payment !== 'undefined' ? `/${payment._id}?_method=PUT` : '' %>" method="POST" class="validated-form" novalidate>
+                        <div class="mb-3">
+                            <label for="payment_code" class="form-label">Payment Code</label>
+                            <input type="text" class="form-control" id="payment_code" name="payment[payment_code]" readonly value="<%= typeof payment !== 'undefined' ? payment.payment_code : code %>">
+                        </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="order_id" class="form-label">Order</label>
+                                    <select name="payment[order_id]" id="order_id" class="form-control select2 payment_select2" onchange="set_price(event);">
+                                        <option value=""></option>
+                                        <% for (let order of orders) {%>
+                                            <% if(typeof payment !== 'undefined' && payment.order_id._id.toString() === order._id.toString()){ %>
+                                                <option value="<%= order._id %>" total="<%= order.total_order %>" selected><%= order.order_code %></option>                                                        
+                                            <% } else { %>
+                                                <option value="<%= order._id %>" total="<%= order.total_order %>"><%= order.order_code %></option>                                                        
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <b>Total : </b><br>
+                                    <span>
+                                        <% if(typeof payment !== 'undefined') { %>
+                                            Rp. <span id="total"><%= payment.order_id.total_order %></span>
+                                        <% } else { %>
+                                            Rp. <span id="total">0</span>
+                                        <% } %>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="payment_category" class="form-label">Category</label>
+                            <select id="payment_category" name="payment[payment_category]" class="form-control select2">
+                                <option value=""></option>
+                                <option value="DP" <%= typeof payment !== 'undefined' ? (payment.payment_category == 'DP' ? 'selected' : '') : '' %> >DP</option>
+                                <option value="Installment" <%= typeof payment !== 'undefined' ? (payment.payment_category == 'Installment' ? 'selected' : '') : '' %> >Installment</option>
+                                <option value="Paid Off" <%= typeof payment !== 'undefined' ? (payment.payment_category == 'Paid Off' ? 'selected' : '') : '' %> >Paid Off</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="payment_value" class="form-label">Pay</label>
+                            <input type="text" class="form-control" id="payment_value" name="payment[payment_value]" autofocus required value="<%= typeof payment !== 'undefined' ? payment.payment_value : '' %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="payment_date" class="form-label">Payment Date</label>
+                            <input type="text" class="form-control datepicker" id="payment_date" name="payment[payment_date]" autofocus required value="<%= typeof payment !== 'undefined' ? moment(payment.payment_date).format('Y-MM-DD') : moment().format('Y-MM-DD') %>">
+                        </div>
+                        
+                        <button class="btn btn-primary btn-block"><%= typeof payment !== 'undefined' ? 'Update' : 'Add' %></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/payment/form.js"></script>

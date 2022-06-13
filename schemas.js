@@ -36,7 +36,17 @@ module.exports.productSchema = Joi.object({
 module.exports.costTypeSchema = Joi.object({
     cost_type: Joi.object({
         name: Joi.string().required().escapeHTML(),
-        type: Joi.number().required().valid('cost', 'profit')
+        type: Joi.string().required().valid('cost', 'profit')
+    })
+})
+
+module.exports.paymentSchema = Joi.object({
+    payment: Joi.object({
+        order_id: Joi.string().required(),
+        payment_category: Joi.string().required().valid('DP', 'Installment', 'Paid Off'),
+        payment_code: Joi.string().required(),
+        payment_value: Joi.number().required().min(0),
+        payment_date: Joi.string()
     })
 })
 

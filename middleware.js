@@ -20,7 +20,8 @@ const ExpressError = require('./utils/expressError');
      productSchema, 
      costTypeSchema,
      rootIngridientSchema,
-     orderSchema
+     orderSchema,
+     paymentSchema
     } = require('./schemas');
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -71,6 +72,17 @@ module.exports.validateProductPartial = (req, res, next) => {
 module.exports.validateCostType = (req, res, next) => {
 
     const { error } = costTypeSchema.validate(req.body);
+    if(error){
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }
+    else{
+        next();
+    }
+}
+
+module.exports.validatePayment = (req, res, next) => {
+    const { error } = paymentSchema.validate(req.body);
     if(error){
         const msg = error.details.map(el => el.message).join(',');
         throw new ExpressError(msg, 400);
