@@ -3,6 +3,7 @@ const Payment = require('../models/payment');
 const Order = require('../models/order');
 const OrderDetail = require('../models/order_detail');
 
+const helper = require('../helper/global_helper');
 
 const moment = require('moment')
 const title = 'Order'
@@ -14,18 +15,18 @@ module.exports.index = async (req, res) => {
 
 module.exports.renderNewForm = async (req, res) => {
     const products = await Product.find({owner: req.user._id})
-    const code = await generate_code('ORD');
+    const code = helper.generate_code('ORD');
     res.render('order/form', {products, code, title});
 }
 
-const generate_code = async (header) => {
-    let new_date = new Date().toISOString().split('T');
-    let time = new_date[1].replaceAll(':', '').replace('Z', '').replace('.', '');
-    let date = new_date[0].replaceAll('-', '');
-    date = date + time;
+// const generate_code = async (header) => {
+//     let new_date = new Date().toISOString().split('T');
+//     let time = new_date[1].replaceAll(':', '').replace('Z', '').replace('.', '');
+//     let date = new_date[0].replaceAll('-', '');
+//     date = date + time;
 
-    return header + '-' + date;
-}
+//     return header + '-' + date;
+// }
 
 module.exports.store = async(req, res, next) => {
     const order = new Order(req.body.order);
