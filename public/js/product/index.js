@@ -7,6 +7,10 @@ const app = {
             return String(meta.row + meta.settings._iDisplayStart + 1);
         }
 
+        var format_decimal = function (data, type, row, meta) {
+            return String(data.toFixed(2))
+        }
+
         var createActionBtn = function (data, type, row, meta){
             let action = `
                 <div class="d-flex justify-content-center align-items-center">
@@ -30,15 +34,28 @@ const app = {
             ajax: {
                 url: "/product/data"
             },
+            columnDefs: [
+                {
+                    targets: [2, 3, 4, 5, 6],
+                    className: 'dt-body-right',
+                    render: format_decimal
+                },
+            ],
             columns: [
                 {
                     data: null,
                     render: icon_number,
                 },
                 {data: 'name'},
-                {data: 'price'},
-                {data: 'total_ingridient'},
-                {data: 'total_cost'},
+                {
+                    data: 'price',
+                },
+                {
+                    data: 'total_ingridient',
+                },
+                {
+                    data: 'total_cost',
+                },
                 {data: 'total_profit'},
                 {data: 'adjustment'},
                 {
