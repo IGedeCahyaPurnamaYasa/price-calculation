@@ -21,25 +21,25 @@
                             <td>Total Ingridient</td>
                             <td> : </td>
                             <td></td>
-                            <td id="sum_ingridient">0</td>
+                            <td id="sum_ingridient" class="text-right">0</td>
                         </tr>
                         <tr>
                             <td>Total Cost</td>
                             <td> : </td>
                             <td></td>
-                            <td id="sum_cost">0</td>
+                            <td id="sum_cost" class="text-right">0</td>
                         </tr>
                         <tr>
                             <td>Total Profit</td>
                             <td> : </td>
                             <td></td>
-                            <td id="sum_profit">0</td>
+                            <td id="sum_profit" class="text-right">0</td>
                         </tr>
                         <tr>
                             <td>Adjustment</td>
                             <td> : </td>
                             <td></td>
-                            <td id="adjustment">0</td>
+                            <td id="adjustment" class="text-right">0</td>
                         </tr>
                     </tbody>
                 </table>
@@ -75,16 +75,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table_ingridient_body">
-                                    <% for(let i = 0; i < product.ingridients.length; i++ ) { %>
-                                        <tr>
-                                            <td class="text-center"><%= i+1 %></td>
-                                            <td><%= product.ingridients[i].root_ingridient_id ? product.ingridients[i].root_ingridient_id.name : product.ingridients[i].name%></td>
-                                            <td class="text-right"><%= product.ingridients[i].qty%></td>
-                                            <td class="text-center"><%= product.ingridients[i].unit%></td>
-                                            <td class="text-right"><%= product.ingridients[i].price%></td>
-                                            <td class="ingridient_total text-right"><%= product.ingridients[i].total%></td>
-                                        </tr>
-                                    <% } %> 
+
                                 </tbody>
                             </table>
                         </div>
@@ -105,13 +96,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table_cost_body">
-                                    <% for(let i = 0; i < product.costs.length; i++ ) { %>
-                                        <tr>
-                                            <td class="text-center"><%= i+1 %></td>
-                                            <td><%= product.costs[i].cost_type_id.name%></td>
-                                            <td class="cost_percentage text-center <%= product.costs[i].cost_type_id.type %>"><%= product.costs[i].percentage%></td>
-                                        </tr>
-                                    <% } %> 
     
                                 </tbody>
                             </table>
@@ -123,4 +107,5 @@
     </div>
 </div>
 
+<script src="/js/helper.js"></script>
 <script src="/js/product/show.js"></script>

@@ -70,19 +70,7 @@ module.exports.store = async(req, res, next) => {
 module.exports.show = async (req, res) => {
     const { id } = req.params;
 
-    const product = await Product.findById(id)
-        .populate({
-            path: 'ingridients',
-            populate: {
-                path: 'root_ingridient_id'
-            }
-        })
-        .populate({
-            path: 'costs',
-            populate: {
-                path: 'cost_type_id'
-            }
-        });
+    const product = await Product.findById(id);
 
     if(!product){
         req.flash('error', 'Cannnot find that product');
