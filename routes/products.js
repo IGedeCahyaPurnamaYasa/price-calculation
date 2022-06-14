@@ -15,6 +15,8 @@ const router = express.Router()
  * CONTROLLERS
  */
 const productController = require('../controllers/products');
+const ingridientController = require('../controllers/ingridients');
+const costController = require('../controllers/costs');
 
 
 /**
@@ -42,5 +44,9 @@ router.route('/:id')
     .delete(isLoggedIn, isOwner, catchAsync(productController.delete));
 
 router.get('/:id/edit', isLoggedIn, isOwner, catchAsync(productController.renderEditForm));
+
+
+router.get('/:id/ingridients', isLoggedIn, ingridientController.data);
+router.get('/:id/costs', isLoggedIn, costController.data);
 
 module.exports = router;
