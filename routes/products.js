@@ -31,8 +31,8 @@ router.route('/')
     .post(isLoggedIn, upload.array('image'), validateProduct, catchAsync(productController.store));
 
 
-// router.route('/data')
-//     .get(isLoggedIn, catchAsync(productController.data));
+router.route('/data')
+    .get(isLoggedIn, catchAsync(productController.data));
 
 router.get('/new', isLoggedIn, productController.renderNewForm);
 

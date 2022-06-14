@@ -6,9 +6,14 @@ const mongoose = require('mongoose');
 const RootIngridient = require('../models/root_ingridient');
 const ObjectId = mongoose.Types.ObjectId;
 
+var title = 'Product';
+
 module.exports.index = async (req, res) => {
-    
-    const products = await Product.find({})
+    res.render('product/index', {title});
+}
+
+module.exports.data = async (req, res) => {
+    let products = await Product.find({})
         .populate('ingridients')
         .populate({
             path: 'costs',
@@ -16,6 +21,9 @@ module.exports.index = async (req, res) => {
                 path: 'cost_type_id'
             }
         });
+
+    products = JSON.parse(JSON.stringify(products));
+
     for(let i = 0 ; i < products.length; i++){
         let total_ingridient = 0;
         let total_cost = 0;
@@ -40,12 +48,7 @@ module.exports.index = async (req, res) => {
         products[i].adjustment = products[i].price - (total_ingridient + total_cost + total_profit);
     }
 
-    res.render('product/index', {products});
-}
-
-module.exports.data = async (req, res) => {
-    const product = await Product.find({});
-    res.send(product);
+    res.send({data: products});
 }
 
 module.exports.renderNewForm = async (req, res) => {
