@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const RootIngridient = require('../models/root_ingridient');
 const ObjectId = mongoose.Types.ObjectId;
 
-var title = 'Product';
+var title = 'Product1';
 
 module.exports.index = async (req, res) => {
     res.render('product/index', {title});
