@@ -63,7 +63,7 @@ module.exports.store = async(req, res, next) => {
 
     await product.save();
 
-    req.flash('success', 'Successfully add new product');
+    req.flash('success', 'Successfully add new product1');
     res.redirect(`/product/${product._id}`);
 }
 
